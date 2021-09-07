@@ -1,0 +1,27 @@
+/*
+ * An advance programming project to implement Scotland_Yard game board
+ */
+package logic;
+
+/**
+ *
+ * @author Alireza
+ */
+public class LoadDetective {
+    int noOfDetectives;
+    boolean ai;
+    Players players[];
+
+    public int getNoOfDetectives() {
+        return noOfDetectives;
+    }
+
+    public boolean isAi() {
+        return ai;
+    }
+
+    public Players[] getPlayers() {
+        return players;
+    }
+    
+}

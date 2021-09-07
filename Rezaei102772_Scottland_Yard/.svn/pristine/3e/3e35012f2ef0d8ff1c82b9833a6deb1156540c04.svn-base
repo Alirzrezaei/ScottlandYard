@@ -1,0 +1,75 @@
+
+package logic;
+
+import com.sun.media.jfxmedia.events.PlayerStateEvent;
+
+/**
+ *
+ * @author ite102772
+ */
+public class Players{
+    
+    
+    private playerType type;
+    private boolean AIControl;
+    private int currentStation;
+    private int taxi;
+    private int bus;
+    private int train;
+    private int boat;
+    
+    Players(boolean AIControl, playerType type, int taxi, int bus, int train, int boat){
+        this.AIControl = AIControl;
+        this.type = type;
+        this.taxi = taxi;
+        this.bus = bus;
+        this.train = train;
+        this.boat = boat;
+    }
+    protected boolean isAIControlled(){
+        return AIControl;
+    }
+    protected playerType getType(){
+        return type;
+    }
+    protected int getTaxiTickets(){
+        return taxi;
+    }
+    protected int getBusTickets(){
+        return bus;
+    }
+    protected int getTrainTickets(){
+        return train;
+    }
+    protected int getBoatTickets(){
+        return boat;
+    }
+    protected int getCurrentStation(){
+        return currentStation;
+    }
+    protected void setCurrentStation(int currentStation){
+        this.currentStation = currentStation;
+    }
+    protected void increaseTicket(TicketType ticket){
+        if(ticket == TicketType.Taxi){
+           taxi++;
+        }else if(ticket == TicketType.Bus){
+            bus++;
+        }else if(ticket == TicketType.Train){
+            train++;
+        }else{
+            boat++;
+        }
+    }
+    protected void decreaseTicket(TicketType ticket){
+        if(ticket == TicketType.Taxi){
+           taxi--;
+        }else if(ticket == TicketType.Bus){
+            bus--;
+        }else if(ticket == TicketType.Train){
+            train--;
+        }else{
+            boat--;
+        }
+    }
+}

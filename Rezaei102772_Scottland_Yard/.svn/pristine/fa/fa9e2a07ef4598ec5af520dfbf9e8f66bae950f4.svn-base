@@ -1,0 +1,90 @@
+
+package logic;
+import java.io.FileNotFoundException;
+import java.util.Random;
+import java.util.Scanner;
+import org.json.JSONException;
+/**
+ *
+ * @author ite102772
+ */
+public class Game {
+
+    private int NoofPlayer;
+    private Board board;
+    private JSONParser parser = new JSONParser();
+    private Players[] players;
+    private GUIConnector gui;
+
+
+    public Game(GUIConnector gui, int player, boolean misterXAI, boolean detectivesAI) {
+        this.gui = gui;
+        try{
+        this.board = parser.jsonParsing();
+        }catch(FileNotFoundException ex){
+            System.out.println("it should be implemented by exception class");
+        }catch(JSONException ex){
+            System.out.println("it should be implemented by exception class");
+        }
+        this.NoofPlayer = player + 1;
+        this.players = new Players[NoofPlayer];
+        
+        for(int i = 0; i < this.NoofPlayer; i++){
+            if(i == 0){
+                this.players[i] = new MisterX(misterXAI, playerType.MisterX);
+            }else{
+                this.players[i] = new Detectives(detectivesAI, playerType.values()[i]);
+            }
+        }
+        setStartingStations();
+        System.out.println("in game: " + player + ", " + misterXAI + ", " + detectivesAI+"\n");
+         for(int i = 0; i < this.NoofPlayer; i++){
+             System.out.println(players[i].getType()+", "+players[i].isAIControlled()+", "+ players[i].getTaxiTickets()+"\n"+
+                     players[i].getCurrentStation());
+        }
+    }
+    public Players[] getPlayers(){
+        return this.players;
+    }
+    public int getNoOfPlayers(){
+        return NoofPlayer;
+    }
+    private void setStartingStations(){
+        int starting[] = new int[]{13,26,29,34,50,53,91,94,103,112,117,132,138,141,155,174,197,198};
+        Random rand = new Random();
+    
+        for(int i = 0; i < players.length; i++){
+            boolean set = false;
+            
+            while(!set){
+                int index = rand.nextInt(18);
+                
+                for(int j = 0; j < i && !set; j++){ // check if previous players has not station with selected index
+                    if(players[j].getCurrentStation() == starting[index]){
+                        set = true;
+                    }
+                }
+                if(!set){
+                    players[i].setCurrentStation(starting[index]);
+                    set = true;
+                }               
+            }
+        }     
+    }
+    public void save() {
+        System.out.println("Save");
+    }
+
+    public void load() {
+        System.out.println("Load");
+    }  
+    public void getPositions(double x, double y){
+        System.out.println(x+", "+y);
+        int station = board.calcPoints(x, y);
+        System.out.println(station);
+        if(station > 0){
+            double point[] = board.getCoordinates(station - 1);
+            this.gui.drawCircle(point[0], point[1]);
+        }
+    }
+}

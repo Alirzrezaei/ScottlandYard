@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1390.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rezaei102772_scottland_yard.FXMLDocumentController">
+   <right>
+      <SplitPane dividerPositions="0.5" maxWidth="300.0" minWidth="300.0" orientation="VERTICAL" prefWidth="300.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane maxHeight="300.0" maxWidth="300.0" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0" SplitPane.resizableWithParent="false" />
+          <AnchorPane maxHeight="500.0" maxWidth="300.0" minHeight="500.0" minWidth="300.0" prefHeight="500.0" prefWidth="300.0" SplitPane.resizableWithParent="false" />
+        </items>
+      </SplitPane>
+   </right>
+   <top>
+      <MenuBar maxHeight="40.0" minHeight="40.0" prefHeight="40.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#onClickMenuClose" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#onClickMenuAbout" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <Pane fx:id="pnChange" prefHeight="814.0" prefWidth="1081.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane fx:id="pnMap" prefHeight="814.0" prefWidth="1081.0" />
+         </children>
+      </Pane>
+   </center>
+</BorderPane>

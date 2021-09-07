@@ -1,0 +1,116 @@
+package gui;
+
+import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
+import logic.GUIConnector;
+import logic.playerType;
+
+/**
+ * javaFXGUI class is being used to update gui of the program. It receives all
+ * the necessary elements from FXMLDocumentController during initializing and
+ * then views will be updated from logic.
+ *
+ * @author Rezaei
+ */
+public class javaFXGUI implements GUIConnector {
+
+    private Pane pnMain;
+    private Label lblTurn;
+    private Label[] lblTickets = new Label[4];
+    private Label[] lblMisterXTickets = new Label[24];
+    private Circle[] circle = new Circle[6];
+    private Polygon[] triangle = new Polygon[6];
+
+    /**
+     * constructor to make javaFXGUI.
+     *
+     * @param pnMain
+     */
+    public javaFXGUI(Pane pnMain) {
+        this.pnMain = pnMain;
+    }
+
+    /**
+     * this method is creating a circle object, bind it to main pane and return it
+     *
+     * @param x
+     * @param y
+     * @param circle
+     * @param color
+     * @return circle
+     */
+    public Circle drawCircle(double x, double y, Circle circle, Polygon triangle, String color) {
+
+        
+
+        double xNorm = x * pnMain.getWidth();
+        double yNorm = y * pnMain.getHeight();
+
+        circle = new Circle();
+        circle.setCenterX(15);
+        circle.setCenterY(15);
+        circle.setRadius(10);
+        circle.setStyle("-fx-fill: "+ color +";");
+        //bind the center position to the pane on which the circle is displayed 
+        circle.centerXProperty().bind(this.pnMain.widthProperty().multiply(x));
+        circle.centerYProperty().bind(this.pnMain.heightProperty().multiply(y));
+       
+        // add the circle to the pane
+        this.pnMain.getChildren().add(circle);    
+        return circle;
+    }
+    /**
+     * this method is creating an instance of Polygon (triangle) using given parameters and bind it to given circle. 
+     * 
+     * 
+     * @param x
+     * @param y
+     * @param triangle
+     * @param circle
+     * @return a triangle
+     */
+    private Polygon drawPolygon(double x, double y, Polygon triangle, Circle circle){
+        
+        triangle = new Polygon();
+        
+        triangle.getPoints().addAll(new Double[]{
+            x, (y + 9.0),
+            (x + 8.0), (y + 25.0),
+            (x - 8.0), (y + 25.0)});
+        triangle.setFill(javafx.scene.paint.Color.LIGHTGRAY);
+        // bind the x and y properties of triangle to center of the given circle
+        triangle.translateXProperty().bind(circle.centerXProperty());
+        triangle.translateYProperty().bind(circle.centerYProperty());
+        
+        // add the triangle to the pane
+        this. pnMain.getChildren().add(triangle);
+        
+        return triangle;
+    }
+    /**
+     * this method is to create a circle and a triangle for the given player on the gui board
+     * @param x
+     * @param y
+     * @param player 
+     */
+    @Override
+    public void circle(double x, double y, int player) {
+        
+        //remove the circle from the pane
+        System.out.println("player " + playerType.values()[player].getValue()+", player: "+ player);
+        
+        //remove existing circle and triangle from the pane
+        if (circle[player] != null) {
+            pnMain.getChildren().remove(circle[player]);
+            pnMain.getChildren().remove(triangle[player]);
+        }  
+        circle[player] = drawCircle(x, y, circle[player], triangle[player], playerType.values()[player].getValue());
+        triangle[player] = drawPolygon(x, y, triangle[player], circle[player]);
+    }
+
+}

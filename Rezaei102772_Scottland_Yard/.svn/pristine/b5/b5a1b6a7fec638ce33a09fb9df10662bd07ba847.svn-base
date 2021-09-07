@@ -1,0 +1,11 @@
+
+
+package logic;
+
+/**
+ *
+ * @author ite102772
+ */
+public enum playerType {
+    MisterX, Blue, Red, Yellow, Green, Black;
+}

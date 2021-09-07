@@ -1,0 +1,7 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}An advance programming project to implement Scotland_Yard game board
+<#if licenseLast??>
+${licenseLast}
+</#if>

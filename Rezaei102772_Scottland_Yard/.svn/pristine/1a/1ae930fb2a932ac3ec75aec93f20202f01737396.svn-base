@@ -1,0 +1,23 @@
+
+package logic;
+
+/**
+ *
+ * @author ite102772
+ */
+public class MisterX extends Players{
+
+
+    public MisterX(boolean AIControl, playerType type, int detectives) {
+        super(AIControl, type, 4, 3, 3, detectives);
+    }
+    /**
+     * this method is doing all the necessary things when the misterX's turn is and 
+     * is controlled by AI
+     */
+    protected void AI(Players[] player){
+        
+        
+        
+    }
+}

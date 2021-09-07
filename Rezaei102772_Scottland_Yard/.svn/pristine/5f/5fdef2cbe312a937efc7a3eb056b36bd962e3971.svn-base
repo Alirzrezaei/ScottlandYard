@@ -1,0 +1,43 @@
+/*
+ * An advance programming project to implement Scotland_Yard game board
+ */
+package logic;
+
+/**
+ *
+ * @author Alireza
+ */
+public class LoadMisterX {
+    
+    boolean ai; 
+    int possibleTargets[];
+    int lastShownPos;
+    int currPos;
+    int remainingTickets[];
+    int journeyBoard[];
+
+    public boolean isAi() {
+        return ai;
+    }
+
+    public int[] getPossibleTargets() {
+        return possibleTargets;
+    }
+
+    public int getLastShownPos() {
+        return lastShownPos;
+    }
+
+    public int getCurrPos() {
+        return currPos;
+    }
+
+    public int[] getRemainingTickets() {
+        return remainingTickets;
+    }
+
+    public int[] getJourneyBoard() {
+        return journeyBoard;
+    }
+    
+}

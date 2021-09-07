@@ -1,0 +1,69 @@
+package logic;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import org.json.JSONException;
+
+/**
+ *
+ * @author ite102772
+ */
+public class JSONParser {
+
+    private String jsonFile = "net.json";
+
+    protected Board jsonParsing() throws FileNotFoundException, JSONException {
+
+        Gson gson = new Gson();
+        JSONArray jsonArray = null;
+        FileReader reader = new FileReader(jsonFile);
+        // creating JSONObject 
+        Object obj = gson.fromJson(reader, Object.class);
+
+        JSONObject jsonObject = new JSONObject(obj.toString());
+
+        jsonArray = jsonObject.getJSONArray("stations");
+
+        Board br = new Board();
+        Stations stations;
+        for (int i = 0; i < jsonArray.length(); i++) {
+
+            JSONObject o = jsonArray.getJSONObject(i);
+
+            int identifier = o.getInt("identifier");
+
+            double x = o.getJSONObject("position").getDouble("x");
+            double y = o.getJSONObject("position").getDouble("y");
+
+            //JSONArray data = o.getJSONArray("cab");
+            int[] taxi = getIntValues(o.getJSONArray("cab"));
+            int[] bus = getIntValues(o.getJSONArray("bus"));
+            int[] train = getIntValues(o.getJSONArray("tube"));
+            int[] boat = getIntValues(o.getJSONArray("boat"));
+
+//            System.out.println(jsonArray.getJSONObject(i));
+//            System.out.println("identifier: " + identifier + "\nx: " + x + "\ny: " + y + "\n" + taxi.length);
+
+            br.add(new Stations(identifier, new double[]{x, y}, taxi, bus, train, boat));
+        }
+        return br;
+
+    }
+
+    private int[] getIntValues(JSONArray jsonData) throws JSONException {
+        int[] intValue = new int[jsonData.length()];
+
+        for (int i = 0; i < jsonData.length(); i++) {
+            intValue[i] = jsonData.getInt(i);
+        }
+
+        return intValue;
+    }
+}

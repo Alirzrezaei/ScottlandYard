@@ -1,0 +1,140 @@
+package logic;
+
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ *
+ * @author ite102772
+ */
+public class MisterX extends Players {
+
+    public MisterX(boolean AIControl, playerType type, int detectives) {
+        super(AIControl, type, 4, 3, 3, detectives);
+    }
+
+    /**
+     * this method is doing all the necessary things when the misterX's turn is
+     * and is controlled by AI
+     */
+    protected void AI(Players[] players, Board board) {
+        assert (board != null && players != null);
+
+        Station st = board.getStations().get(players[0].getCurrentStation()-1);
+
+        List<Station> neighbors = /*list of free stations*/ifOccupiedByDetective(
+                /*list of all stations*/listOfAllNeighbors(st, board), players);
+        if(!neighbors.isEmpty()){
+            int sum = 0;
+            for (int i = 0; i < neighbors.size(); i++) {
+                int temp = 0;
+                if(canMoveToStation(this, neighbors.get(i), board)){
+                    
+                    temp = ((players.length - 1) - countDetectiveAccess(players, st, board)) * 10;
+                     
+                    
+                }
+                if(temp > sum){
+                    sum = temp;
+                }
+                
+            }
+        }else{
+            
+        }
+        
+        
+
+    }
+
+    private int calcNeighbor(Players player, Board board) {
+        int calculation;
+        
+        
+
+        return 0;
+    }
+
+    private int availableStations() {
+
+        return 0;
+    }
+    /**
+     * check if the station is list is occupied by a detective, it will be removed from list of 
+     * possible station to move in
+     * @param stations
+     * @param players
+     * @return list of stations
+     */
+    protected List<Station> ifOccupiedByDetective(List<Station> stations, Players[] players){
+        boolean isDeleted;
+        for(int i = 0; i < stations.size(); i++){
+            isDeleted = false;
+            for (int j = 1; j < players.length && !isDeleted; j++) {
+                if(players[i].getCurrentStation() == stations.get(i).getIdentifier()){
+                    stations.remove(i);
+                    isDeleted = true;
+                }
+                
+            }
+        }
+        return stations;
+    }
+    @Override
+    protected List<Station> listOfAllNeighbors(Station st, Board board){
+        List<Station> neighbors = new LinkedList<>();
+        // the list of different neighbors
+        neighbors.addAll(listOfNeighborsByMeans(st.getTaxiNeighbors(), board));
+        neighbors.addAll(listOfNeighborsByMeans(st.getBusNeighbors(), board));
+        neighbors.addAll(listOfNeighborsByMeans(st.getTrainNeighbors(), board));
+        neighbors.addAll(listOfNeighborsByMeans(st.getBoatNeighbors(), board));
+        
+        return neighbors;
+    }
+    
+    private List<Station> listOfNeighborsByMeans(Station[] neighbors, Board board) {
+
+        List<Station> temp = new LinkedList<>();
+
+        for (int i = 0; i < neighbors.length; i++) {
+            if (!temp.contains(board.getStations().get(neighbors[i].getIdentifier()))) {
+                temp.add(board.getStations().get(neighbors[i].getIdentifier()));
+            }
+        }
+        return temp;
+    }
+    
+    private boolean canMoveToStation(Players p, Station st, Board br){
+        
+        boolean canMove = false;
+        
+        canMove = canMove || (br.isTaxiNeighbor(p.getCurrentStation(), st.getIdentifier()) && (p.getTaxiTickets() > 0 || p.getBoatTickets() > 0));
+        
+        canMove = canMove || (br.isBusNeighbor(p.getCurrentStation(), st.getIdentifier()) && (p.getBusTickets() > 0 || p.getBoatTickets() > 0));
+        
+        canMove = canMove || (br.isTrainNeighbor(p.getCurrentStation(), st.getIdentifier()) && (p.getTrainTickets() > 0 || p.getBoatTickets() > 0));
+        
+        canMove = canMove || (br.isBoatNeighbor(p.getCurrentStation(), st.getIdentifier()) && p.getBoatTickets() > 0);
+        
+        return canMove;
+    }
+    
+    private int countDetectiveAccess(Players[] pl, Station st, Board br){
+        
+        int count = 0;
+        
+        for (int i = 1; i < pl.length; i++) {
+            if(br.isNeighbor(pl[i].getCurrentStation(), st.getIdentifier()) && canMoveToStation(pl[i], st, br)){
+                count++;
+            }   
+        }
+        
+        return count;
+    }
+    
+    private int countSndNeighborMove(Station st, Players[] pl){
+        int sum = 0;
+        return sum;
+    }
+
+}

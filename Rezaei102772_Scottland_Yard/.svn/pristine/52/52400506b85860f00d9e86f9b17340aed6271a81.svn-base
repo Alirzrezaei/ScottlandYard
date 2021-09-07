@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1390.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.FXMLDocumentController">
+   <right>
+      <SplitPane fx:id="splPnRight" dividerPositions="0.0" maxWidth="300.0" minWidth="300.0" orientation="VERTICAL" prefWidth="300.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane maxHeight="300.0" maxWidth="300.0" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0" SplitPane.resizableWithParent="false">
+               <children>
+                  <Label layoutX="60.0" layoutY="14.0" maxHeight="30.0" maxWidth="180.0" minHeight="30.0" minWidth="180.0" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: darkgray;" />
+                  <GridPane gridLinesVisible="true" layoutX="60.0" layoutY="50.0">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="50.0" prefHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label fx:id="lblTaxi" maxHeight="45.0" maxWidth="90.0" minHeight="45.0" minWidth="90.0" prefHeight="45.0" prefWidth="90.0" style="-fx-background-radius: 10px;" GridPane.columnIndex="1" />
+                        <Label fx:id="lblBus" maxHeight="45.0" maxWidth="90.0" minHeight="45.0" minWidth="90.0" prefHeight="45.0" prefWidth="90.0" style="-fx-background-radius: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lblTrain" maxHeight="45.0" maxWidth="90.0" minHeight="45.0" minWidth="90.0" prefHeight="45.0" prefWidth="90.0" style="-fx-background-radius: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="lblBoat" maxHeight="45.0" maxWidth="90.0" minHeight="45.0" minWidth="90.0" prefHeight="45.0" prefWidth="90.0" style="-fx-background-radius: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="lblTaxiNum" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 10px;" />
+                        <Label fx:id="lblBusNum" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 10px;" GridPane.rowIndex="1" />
+                        <Label fx:id="lblTrainNum" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 10px;" GridPane.rowIndex="2" />
+                        <Label fx:id="lblBoatNum" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 10px;" GridPane.rowIndex="3" />
+                     </children>
+                  </GridPane>
+               </children></AnchorPane>
+          <AnchorPane maxHeight="500.0" maxWidth="300.0" minHeight="500.0" minWidth="300.0" prefHeight="500.0" prefWidth="300.0" SplitPane.resizableWithParent="false">
+               <children>
+                  <GridPane gridLinesVisible="true" layoutY="14.0" maxHeight="400.0" maxWidth="300.0" minHeight="400.0" minWidth="300.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: lightgreen;">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label fx:id="lblMisterXOne" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="1" />
+                        <Label fx:id="lblMisterXTwo" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lblMisterXThree" alignment="CENTER" maxHeight="45.0" maxWidth="65.0" minHeight="45.0" minWidth="65.0" prefHeight="45.0" prefWidth="65.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="lblMisterXFour" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="lblMisterXFive" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label fx:id="lblMisterXSix" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="lblMisterXSeven" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label fx:id="lblMisterXEight" alignment="CENTER" maxHeight="45.0" maxWidth="65.0" minHeight="45.0" minWidth="65.0" prefHeight="45.0" prefWidth="65.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <Label fx:id="lblMisterXNine" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="3" />
+                        <Label fx:id="lblMisterXTen" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label fx:id="lblMisterXEleven" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <Label fx:id="lblMisterXTwelf" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <Label fx:id="lblMisterXThirteen" alignment="CENTER" maxHeight="45.0" maxWidth="65.0" minHeight="45.0" minWidth="65.0" prefHeight="45.0" prefWidth="65.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                        <Label fx:id="lblMisterXFourteen" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                        <Label fx:id="lblMisterXFifteen" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                        <Label fx:id="lblMisterXSixteen" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                        <Label fx:id="lblMisterXSeventeen" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="5" />
+                        <Label fx:id="lblMisterXEighteen" alignment="CENTER" maxHeight="45.0" maxWidth="65.0" minHeight="45.0" minWidth="65.0" prefHeight="45.0" prefWidth="65.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                        <Label fx:id="lblMisterXNinteen" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                        <Label fx:id="lblMisterXTwenty" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                        <Label fx:id="lblMisterXtwentyone" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                        <Label fx:id="lblMisterXTwentyTwo" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                        <Label fx:id="lblMisterXTwentythree" alignment="CENTER" maxHeight="45.0" maxWidth="45.0" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="5" GridPane.rowIndex="6" />
+                        <Label fx:id="lblMisterXTwentyfour" alignment="CENTER" maxHeight="45.0" maxWidth="65.0" minHeight="45.0" minWidth="65.0" prefHeight="45.0" prefWidth="65.0" style="-fx-background-radius: 20px; -fx-background-color: white;" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+                        <Label text="1" />
+                        <Label text="2" GridPane.rowIndex="1" />
+                        <Label text="3" GridPane.rowIndex="2" />
+                        <Label text="4" GridPane.rowIndex="3" />
+                        <Label text="5" GridPane.rowIndex="4" />
+                        <Label text="6" GridPane.rowIndex="5" />
+                        <Label text="7" GridPane.rowIndex="6" />
+                        <Label text="8" GridPane.rowIndex="7" />
+                        <Label text="9" GridPane.columnIndex="2" />
+                        <Label text="10" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label text="11" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label text="12" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Label text="13" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <Label text="14" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                        <Label text="15" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                        <Label text="16" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                        <Label text="17" GridPane.columnIndex="4" />
+                        <Label text="18" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <Label text="19" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                        <Label text="20" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                        <Label text="21" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                        <Label text="22" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                        <Label text="23" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+                        <Label text="24" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets top="20.0" />
+                     </opaqueInsets>
+                  </GridPane>
+               </children></AnchorPane>
+        </items>
+      </SplitPane>
+   </right>
+   <top>
+      <MenuBar maxHeight="40.0" minHeight="40.0" prefHeight="40.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem fx:id="menuNewGame" mnemonicParsing="false" onAction="#onClickNewGame" text="New Game" />
+              <MenuItem mnemonicParsing="false" onAction="#onClickMenuClose" text="Close" />
+                  <MenuItem fx:id="MenuSave" mnemonicParsing="false" onAction="#onClickSave" text="Save" />
+                  <MenuItem fx:id="menuLoad" mnemonicParsing="false" onAction="#onClickLoad" text="Load" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#onClickMenuAbout" text="About" />
+                  <MenuItem fx:id="howToPlay" mnemonicParsing="false" onAction="#onClickHowtoPlay" text="How to Play" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <Pane fx:id="pnChange" minHeight="815.0" minWidth="1082.0" prefHeight="815.0" prefWidth="1082.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane fx:id="pnMap" minHeight="814.0" minWidth="1081.0" onMouseClicked="#handleMouseClickPane" prefHeight="814.0" prefWidth="1081.0" />
+         </children>
+      </Pane>
+   </center>
+</BorderPane>

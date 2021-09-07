@@ -1,0 +1,37 @@
+
+package logic;
+
+import java.io.FileNotFoundException;
+import org.json.JSONException;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ *
+ * @author Rezaei
+ */
+public class BoardTest {
+    
+ 
+
+    @Test
+    public void testConstructor() throws FileNotFoundException, JSONException {
+        JSONParser parser = new JSONParser();
+        Board board = new Board(parser.jsonParsing());
+        
+        assertEquals(199, board.getStations().size());
+    }
+    
+    @Test
+    public void testGetIdentifier() throws FileNotFoundException, JSONException {
+        JSONParser parser = new JSONParser();
+        Board board = new Board(parser.jsonParsing());
+        
+        assertEquals(199, board.getStations().size());
+        
+        assertEquals(1, board.getIdentifier(0));
+        assertEquals(50, board.getIdentifier(49));
+    }
+    
+    
+}

@@ -1,0 +1,83 @@
+package rezaei102772_scottland_yard;
+
+import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
+import logic.GUIConnector;
+import logic.playerType;
+
+/**
+ * javaFXGUI class is being used to update gui of the program. It receives all
+ * the necessary elements from FXMLDocumentController during initializing and
+ * then views will be updated from logic.
+ *
+ * @author Rezaei
+ */
+public class javaFXGUI implements GUIConnector {
+
+    private Pane pnMain;
+    private Circle[] circle = new Circle[6];
+
+    /**
+     * constructor to make javaFXGUI.
+     *
+     * @param pnMain
+     */
+    public javaFXGUI(Pane pnMain) {
+        this.pnMain = pnMain;
+    }
+
+    /**
+     * this method is creating a circle object and pass it
+     *
+     * @param x
+     * @param y
+     * @param circle
+     * @param color
+     * @return
+     */
+    public Circle drawCircle(double x, double y, Circle circle, String color) {
+
+        //remove the circle from the pane
+        if (circle != null) {
+            pnMain.getChildren().remove(circle);
+        }
+        System.out.println("in javafxgui");
+        double xNorm = x * pnMain.getWidth();
+        double yNorm = y * pnMain.getHeight();
+
+        circle = new Circle();
+        circle.setCenterX(10);
+        circle.setCenterY(10);
+        circle.setRadius(8);
+        circle.setStyle("-fx-fill: "+ color +";");
+        //bind the center position to the pane on which the circle is displayed 
+        circle.centerXProperty().bind(this.pnMain.widthProperty().multiply(x));
+        circle.centerYProperty().bind(this.pnMain.heightProperty().multiply(y));
+        //remove the previous created circle and display new circle where the mouse 
+
+        double x1 = circle.centerXProperty().doubleValue();
+        double y1 = circle.centerYProperty().doubleValue();
+        //System.out.println(x1 + ", " + y1 + ", \nx and y norms" + xNorm + "," + yNorm + "\n" + this.pnMain.getWidth() + "," + this.pnMain.getHeight());
+
+        // add the circle to the pane
+        this.pnMain.getChildren().add(circle);
+        return circle;
+    }
+
+    @Override
+    public void circle(double x, double y, int player) {
+        //remove the circle from the pane
+        System.out.println("player " + playerType.values()[player].getValue()+", player: "+ player);
+        if (circle[player] != null) {
+            pnMain.getChildren().remove(circle[player]);
+        }  
+        // create a circle and put it on the board
+        circle[player] = drawCircle(x, y, circle[player], playerType.values()[player].getValue());
+
+    }
+
+}

@@ -1,0 +1,22 @@
+
+package logic;
+
+/**
+ *
+ * @author ite102772
+ */
+public class Detectives extends Players{
+  
+    
+    public Detectives(boolean AIControl, playerType type) {
+        super(AIControl, type, 10, 8, 4, 0);
+    }
+    /**
+     * this method is doing every thing when the one of the detectives turn is and 
+     * is controlled by AI.
+     */
+    protected void doTurn(){
+        
+    }
+   
+}

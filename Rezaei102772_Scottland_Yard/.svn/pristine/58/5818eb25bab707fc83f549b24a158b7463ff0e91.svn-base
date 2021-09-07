@@ -1,0 +1,62 @@
+package logic;
+
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ *
+ * @author ite102772
+ */
+public class MisterX extends Players {
+
+    public MisterX(boolean AIControl, playerType type, int detectives) {
+        super(AIControl, type, 4, 3, 3, detectives);
+    }
+
+    /**
+     * this method is doing all the necessary things when the misterX's turn is
+     * and is controlled by AI
+     */
+    protected void AI(Players[] players, Board board) {
+        assert (board != null && players != null);
+
+        Station st = board.getStations().get(players[0].getCurrentStation()-1);
+
+        List<Station> neighbors = listOfAllNeighbors(st, board);
+
+    }
+
+    private int calcNeighbor(Players player, Board board) {
+
+        return 0;
+    }
+
+    private int availableStations() {
+
+        return 0;
+    }
+    @Override
+    protected List<Station> listOfAllNeighbors(Station st, Board board){
+        List<Station> neighbors = new LinkedList<>();
+        // the list of different neighbors
+        neighbors.addAll(listOfNeighborsByMeans(st.getTaxiNeighbors(), board));
+        neighbors.addAll(listOfNeighborsByMeans(st.getBusNeighbors(), board));
+        neighbors.addAll(listOfNeighborsByMeans(st.getTrainNeighbors(), board));
+        neighbors.addAll(listOfNeighborsByMeans(st.getBoatNeighbors(), board));
+        
+        return neighbors;
+    }
+    
+    private List<Station> listOfNeighborsByMeans(int[] neighbors, Board board) {
+
+        List<Station> temp = new LinkedList<>();
+
+        for (int i = 0; i < neighbors.length; i++) {
+            if (!temp.contains(board.getStations().get(neighbors[i]))) {
+                temp.add(board.getStations().get(neighbors[i]));
+            }
+        }
+        return temp;
+    }
+
+}

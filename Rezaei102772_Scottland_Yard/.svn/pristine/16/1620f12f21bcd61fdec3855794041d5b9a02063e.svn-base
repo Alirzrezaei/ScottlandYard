@@ -1,0 +1,18 @@
+
+package logic;
+
+/**
+ *
+ * @author ite102772
+ */
+public class MisterX extends Players{
+
+
+    public MisterX(boolean AIControl, playerType type, int detectives) {
+        super(AIControl, type, 4, 3, 3, detectives);
+    }
+    
+    protected void doTurn(){
+        
+    }
+}

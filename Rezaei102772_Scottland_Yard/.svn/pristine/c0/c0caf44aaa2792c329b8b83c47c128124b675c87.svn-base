@@ -1,0 +1,486 @@
+package logic;
+
+import java.util.AbstractList;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ *
+ * @author ite102772
+ */
+public class Detectives extends Players {
+
+    //private int depth = 10;
+    public Detectives(boolean AIControl, playerType type) {
+        super(AIControl, type, 10, 8, 4, 0);
+    }
+
+    /**
+     * this method is doing every thing when the one of the detectives turn is
+     * and is controlled by AI.
+     *
+     * @param players
+     * @param board
+     * @param targetPositions
+     * @return the choice to play by
+     */
+    @Override
+    protected Choose AI(Players[] players, Board board, List<Station> targetPositions) {
+        
+        System.out.println("targets: " + targetPositions.size());
+        
+        Choose choose = null;
+        double weight = 0.0;
+        Choose temp = null;
+        Station st = board.getStation(this.getCurrentStation());
+
+        if (!isNeighborWithTargets(targetPositions).isEmpty() && 
+                stationWithSmallestId(isNeighborWithTargets(targetPositions), players, board) != null) {//first strategy 
+            Station station = stationWithSmallestId(isNeighborWithTargets(targetPositions), players, board);
+            temp = weightWithDirectNeighbor(targetPositions, board, players, station);
+            if (choose == null) {
+                choose = temp;
+            } else {
+                if (temp.getWeight() > choose.getWeight()) {
+
+                    choose = temp;
+                }
+            }
+        }
+        
+        if (trainStationNeighbor(players, board) != null) {
+            temp = weightWithTrainNeighbor(targetPositions, trainStationNeighbor(players, board), players, board);
+            if (choose == null) {
+                choose = temp;
+            } else {
+                if (temp.getWeight() > choose.getWeight()) {
+                    choose = temp;
+                }
+            }
+        }
+//        List<Station> path = travelToMrX(players, closestToAverageOfStations(board, targetPositions), board);
+        List<Station> path = new ShortestPathFind().bestPath(st, closestToAverageOfStations(board, targetPositions), players, this);
+        
+        if (!path.isEmpty()) {
+            temp = weightWithShortestPath(targetPositions, path.get(1), players, board);
+            
+            if (choose == null) {
+                choose = temp;
+            } else {
+                if (temp != null && temp.getWeight() > choose.getWeight()) {
+                    choose = temp;
+                }
+            }
+        }
+        Station station = stationWithSmallestId(board.getStation(this.getCurrentStation()).getAllNeighbors(), players, board);
+        
+        if(station != null){
+             temp = weightWithMoveToSmallestNeighbor(targetPositions,station, players, board);
+            
+            if (choose == null) {
+                choose = temp;
+            } else {
+                if (temp.getWeight() > choose.getWeight()) {
+                    choose = temp;
+                }
+            }
+        }
+        return choose;
+    }
+
+    protected List<Station> travelToMrX(Players[] player, Station station, Board br) {
+
+        ShortestPathFind bfs = new ShortestPathFind();
+
+        List<Station> neighbors = br.getStation(this.getCurrentStation()).getAllNeighbors();
+        List<Station> bestPath = new LinkedList<>();
+
+//        for (int i = 0; i < neighbors.size(); i++) {
+//            if (!isOccupiedByDetectives(player, neighbors.get(i)) && canMoveToStation(neighbors.get(i), br)) {
+//                List<Station> path = bfs.bestPath(neighbors.get(i), station);
+//
+//                if (bestPath.isEmpty()) {
+//                    bestPath = path;
+//                } else {
+//                    if (path.size() < bestPath.size() || (path.size() == bestPath.size() && path.get(0).getIdentifier() < bestPath.get(0).getIdentifier())) {
+//                        bestPath = path;
+//                    }
+//                }
+//            }
+//        }
+
+        return bestPath;
+    }
+
+    /**
+     * this method is check if any of stations in given list is neighbor with
+     * current station of the player and add it to temp list.
+     *
+     * @param stations
+     * @return List of station neighboring with current station of the player
+     */
+    private List<Station> isNeighborWithTargets(List<Station> stations) {
+        List<Station> temp = new LinkedList<>();
+        for (int i = 0; i < stations.size(); i++) {
+            if (stations.get(i).isNeighbor(this.getCurrentStation())) {
+                temp.add(stations.get(i));
+            }
+        }
+        return temp;
+    }
+
+    private Choose weightWithDirectNeighbor(List<Station> targetStations, Board board, Players[] players, Station station) {
+        double weight = 0.0;
+        double sum = 0.0;
+        double temp = 0.0;
+        Choose choose = null;
+        
+        //Station station = stationWithSmallestId(isNeighborWithTargets(targetStations), players, board);
+        
+        if(targetStations.size() > 1 && station != null)
+        weight = weight + (neighborsWithStation(targetStations, station) / (targetStations.size() - 1) * 10);
+
+        List<Station> path = new ShortestPathFind().bestPath(board.getStation(this.getCurrentStation()), 
+                closestToAverageOfStations(board, targetStations), players, this);
+        if (path.size() < 10) {
+            weight = weight + (10.0 - path.size());
+        }
+        
+        
+        boolean[] moreRoute = routesByMeans(station, this.getCurrentStation());
+        
+        for (int i = 0; i < moreRoute.length; i++) {
+            temp = 0.0;
+            if (moreRoute[i] && this.getTicketByType(TicketType.values()[i]) > 0) {
+                TicketType ticket = TicketType.values()[i];
+                this.decreaseTicket(ticket);
+
+                temp = temp + numberOfAvailableStations(station, players, board) / 13 * 4;
+                temp = temp + ((this.lowestNumberOfTicket() > 2) ? 3 : this.lowestNumberOfTicket());
+
+                if (weight + temp > sum) {
+                    sum = weight + temp;
+                    choose = new Choose(station, sum, ticket);
+                }
+                this.increaseTicket(ticket);
+
+                if (this.getBoatTickets() > 0) {
+                    temp = 0.0;
+
+                    temp = temp + numberOfAvailableStations(station, players, board) / 13 * 4;
+                    temp = temp + ((this.lowestNumberOfTicket() > 2) ? 3 : this.lowestNumberOfTicket());
+
+                    if (weight + temp > sum) {
+                        sum = weight + temp;
+                        choose = new Choose(station, sum, ticket);
+                    }
+                }
+            }
+        }
+
+        return choose;
+    }
+
+    protected Choose weightWithTrainNeighbor(List<Station> targetStations, Station station, Players[] players, Board board) {
+        double weight = 0.0;
+        double sum = 0.0;
+        double temp = 0.0;
+        Choose choose = null;
+        
+        if(targetStations.size() > 0)
+        weight = weight + (neighborsWithStation(targetStations, station) / (targetStations.size()) * 10);
+
+        List<Station> path = new ShortestPathFind().bestPath(board.getStation(this.getCurrentStation()), 
+                station, players, this);
+        if (path.size() < 10) {
+            weight = weight + (10.0 - path.size());
+        }
+
+        boolean[] moreRoute = routesByMeans(station, this.getCurrentStation());
+
+        for (int i = 0; i < moreRoute.length; i++) {
+            temp = 0.0;
+            if (moreRoute[i] && this.getTicketByType(TicketType.values()[i]) > 0) {
+                TicketType ticket = TicketType.values()[i];
+                this.decreaseTicket(ticket);
+
+                temp = temp + numberOfAvailableStations(station, players, board) / 13 * 4;
+                temp = temp + ((this.lowestNumberOfTicket() > 2) ? 3 : this.lowestNumberOfTicket());
+
+                if (weight + temp > sum) {
+                    sum = weight + temp;
+                    choose = new Choose(station, sum, ticket);
+                }
+                this.increaseTicket(ticket);
+
+                if (this.getBoatTickets() > 0) {
+                    temp = 0.0;
+
+                    temp = temp + numberOfAvailableStations(station, players, board) / 13 * 4;
+                    temp = temp + ((this.lowestNumberOfTicket() > 2) ? 3 : this.lowestNumberOfTicket());
+
+                    if (weight + temp > sum) {
+                        sum = weight + temp;
+                        choose = new Choose(station, sum, ticket);
+                    }
+                }
+            }
+        }
+        return choose;
+    }
+    protected Choose weightWithShortestPath(List<Station> targetStations, Station station, Players[] players, Board board){
+        Choose choose = null;
+        
+        
+        
+        double weight = 0.0;
+        double sum = 0.0;
+        double temp = 0.0;
+        
+        if(targetStations.size() > 0)
+        weight = weight + (neighborsWithStation(targetStations, station) / (targetStations.size()) * 10);
+        
+        List<Station> path =  new ShortestPathFind().bestPath(station, closestToAverageOfStations(board, targetStations), players, this);//travelToMrX(players, closestToAverageOfStations(board, targetStations), board);
+        if (path.size() < 10) {
+            weight = weight + (10.0 - path.size());
+        }
+
+        boolean[] moreRoute = routesByMeans(station, this.getCurrentStation());
+
+        for (int i = 0; i < moreRoute.length; i++) {
+            temp = 0.0;
+            if (moreRoute[i] && this.getTicketByType(TicketType.values()[i]) > 0) {
+                TicketType ticket = TicketType.values()[i];
+                this.decreaseTicket(ticket);
+
+                temp = temp + numberOfAvailableStations(station, players, board) / 13 * 4;
+                temp = temp + ((this.lowestNumberOfTicket() > 2) ? 3 : this.lowestNumberOfTicket());
+
+                if (weight + temp > sum) {
+                    sum = weight + temp;
+                    choose = new Choose(station, sum, ticket);
+                }
+                this.increaseTicket(ticket);
+
+                if (this.getBoatTickets() > 0) {
+                    temp = 0.0;
+
+                    temp = temp + numberOfAvailableStations(station, players, board) / 13 * 4;
+                    temp = temp + ((this.lowestNumberOfTicket() > 2) ? 3 : this.lowestNumberOfTicket());
+
+                    if (weight + temp > sum) {
+                        sum = weight + temp;
+                        choose = new Choose(station, sum, ticket);
+                    }
+                }
+            }
+        }
+        return choose;
+    }
+    
+     protected Choose weightWithMoveToSmallestNeighbor(List<Station> targetStations, Station station, Players[] players, Board board){
+         Choose choose = null;
+         double weight = 0.0;
+        double sum = 0.0;
+        double temp = 0.0;
+        
+        if(targetStations.size() > 0)
+        weight = weight + (neighborsWithStation(targetStations, station) / (targetStations.size()) * 10);
+        
+        List<Station> path =  new ShortestPathFind().bestPath(station, closestToAverageOfStations(board, targetStations), players, this);//travelToMrX(players, closestToAverageOfStations(board, targetStations), board);
+        if (path.size() < 10) {
+            weight = weight + (10.0 - path.size());
+        }
+
+        boolean[] moreRoute = routesByMeans(station, this.getCurrentStation());
+
+        for (int i = 0; i < moreRoute.length; i++) {
+            temp = 0.0;
+            if (moreRoute[i] && this.getTicketByType(TicketType.values()[i]) > 0) {
+                TicketType ticket = TicketType.values()[i];
+                this.decreaseTicket(ticket);
+
+                temp = temp + numberOfAvailableStations(station, players, board) / 13 * 4;
+                temp = temp + ((this.lowestNumberOfTicket() > 2) ? 3 : this.lowestNumberOfTicket());
+
+                if (weight + temp > sum) {
+                    sum = weight + temp;
+                    choose = new Choose(station, sum, ticket);
+                }
+                this.increaseTicket(ticket);
+
+                if (this.getBoatTickets() > 0) {
+                    temp = 0.0;
+
+                    temp = temp + numberOfAvailableStations(station, players, board) / 13 * 4;
+                    temp = temp + ((this.lowestNumberOfTicket() > 2) ? 3 : this.lowestNumberOfTicket());
+
+                    if (weight + temp > sum) {
+                        sum = weight + temp;
+                        choose = new Choose(station, sum, ticket);
+                    }
+                }
+            }
+        }
+         return choose;
+     }
+    /**
+     * this method is find the station with smallest id from the given list of
+     * stations
+     *
+     * @param stations
+     * @return station with smallest id
+     */
+    private Station stationWithSmallestId(List<Station> stations, Players[] players, Board br) {
+        Station station = null;
+
+        for (int i = 0; i < stations.size(); i++) {
+            if (!isOccupiedByDetectives(players, stations.get(i)) && canMoveToStation(stations.get(i), br)) {
+                if (station == null) {
+                    station = stations.get(i);
+                } else {
+                    if (stations.get(i).getIdentifier() < station.getIdentifier()) {
+                        station = stations.get(i);
+                    }
+                }
+            }
+        }
+
+        return station;
+    }
+
+    /**
+     * this method check if the given station can reach to any other stations of
+     * the given list and increment the amount of access by 1
+     *
+     * @param stations
+     * @param station
+     * @return integer number stations which are neighbors of given station
+     */
+    private int neighborsWithStation(List<Station> stations, Station station) {
+        assert (station != null);
+        int neighbors = 0;
+        List<Station> temp = stations;
+        
+        for (int i = 0; i < temp.size(); i++) {
+            Station st = temp.get(i);
+            System.out.println("st "+st);
+            int id = station.getIdentifier();
+            if (st.isNeighbor(id)) {
+                neighbors++;
+            }
+        }
+
+        return neighbors;
+    }
+
+    /**
+     * this method is averaging the x and y from Xs and Ys of all stations of
+     * the targetedStations list and then find the closed station to this
+     * average x and y
+     *
+     * @param board
+     * @param targetedSations
+     * @return closest station to average x and y
+     */
+    private Station closestToAverageOfStations(Board board, List<Station> targetedSations) {
+        Station station = null;
+        double xSum = 0.0;
+        double ySum = 0.0;
+        for (int i = 0; i < targetedSations.size(); i++) {
+            xSum = xSum + targetedSations.get(i).getCoordinates().getX();
+            ySum = ySum + targetedSations.get(i).getCoordinates().getY();
+        }
+        Position pos = new Position(xSum / (double) targetedSations.size(), ySum / (double) targetedSations.size());
+
+        station = board.closestStationToPosition(pos);
+
+        return station;
+    }
+
+    private boolean isOccupiedByDetectives(Players[] players, Station station) {
+        boolean occupied = false;
+        for (int i = 1; i < players.length && !occupied; i++) {
+            if (players[i].getCurrentStation() == station.getIdentifier()) {
+                occupied = true;
+            }
+        }
+        return occupied;
+    }
+
+    /**
+     * this method is checking if the given player can move to the given
+     * station. it checks if the player's current station is a neighbor of given
+     * station and player can move to the station with its available ticket.
+     *
+     * @param p
+     * @param st
+     * @param br
+     * @return true if player can move to given station
+     */
+    private boolean canMoveToStation(Station st, Board br) {
+
+        boolean canMove = false;
+
+        canMove = canMove || (br.isTaxiNeighbor(this.getCurrentStation(), st.getIdentifier()) && (this.getTaxiTickets() > 0 || this.getBoatTickets() > 0));
+
+        canMove = canMove || (br.isBusNeighbor(this.getCurrentStation(), st.getIdentifier()) && (this.getBusTickets() > 0 || this.getBoatTickets() > 0));
+
+        canMove = canMove || (br.isTrainNeighbor(this.getCurrentStation(), st.getIdentifier()) && (this.getTrainTickets() > 0 || this.getBoatTickets() > 0));
+
+        canMove = canMove || (br.isBoatNeighbor(this.getCurrentStation(), st.getIdentifier()) && this.getBoatTickets() > 0);
+
+        return canMove;
+    }
+
+    private int numberOfAvailableStations(Station st, Players[] players, Board br) {
+        List<Station> station = listOfAllNeighbors(st);
+
+        for (int i = 1; i < players.length; i++) {
+            boolean removed = false;
+            for (int j = 0; j < station.size() && !removed; j++) {
+                if (station.get(j).getIdentifier() == players[i].getCurrentStation() || !canMoveToStation(station.get(j), br)) {
+                    station.remove(j);
+                    j--;
+                    removed = true;
+                }
+
+            }
+        }
+
+        return station.size();
+    }
+
+    private boolean[] routesByMeans(Station st, int neighborId) {
+        assert(st != null);
+//        boolean[] routes = new boolean[4];
+//
+//        routes[0] = br.isTaxiNeighbor(this.getCurrentStation(), station);
+//        routes[1] = br.isBusNeighbor(this.getCurrentStation(), station);
+//        routes[2] = br.isTrainNeighbor(this.getCurrentStation(), station);
+//        routes[3] = br.isBoatNeighbor(this.getCurrentStation(), station);
+
+        return st.hasMoreRoute(neighborId);
+    }
+
+    private Station trainStationNeighbor(Players[] players, Board board) {
+        Station station = null;
+        boolean found = false;
+        List<Station> stations = board.getStation(this.getCurrentStation()).getAllNeighbors();
+
+        for (int i = 0; i < stations.size(); i++) {
+            if (board.isTrainNeighbor(this.getCurrentStation(), stations.get(i).getIdentifier()) && canMoveToStation(stations.get(i), board)
+                    && !isOccupiedByDetectives(players, stations.get(i))) {
+                if (station == null) {
+                    station = stations.get(i);
+                } else {
+                    if (stations.get(i).getIdentifier() < station.getIdentifier()) {
+                        station = stations.get(i);
+                    }
+                }
+            }
+        }
+
+        return station;
+    }
+}

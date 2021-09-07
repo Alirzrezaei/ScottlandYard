@@ -1,0 +1,28 @@
+
+
+package logic;
+
+/**
+ * this is enum type of all players, MisterX and all detectives
+ * @author ite102772
+ */
+public enum playerType {
+     MisterX("orange"), BLUE("blue"), YELLOW("yellow"), RED("red"),  GREEN("green"), BLACK("black");
+    
+    private String s;
+    /**
+     * this method is setting a name to enums 
+     * @param s 
+     */
+    playerType(String s){
+        this.s = s;
+    }
+    /**
+     * this method is returning the string value of enums
+     * @return String value of enum
+     */
+    public String getValue(){
+        return this.s;
+    }
+    
+}

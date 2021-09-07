@@ -1,0 +1,25 @@
+
+package logic;
+
+import com.google.gson.Gson;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import org.json.JSONArray;
+
+/**
+ *
+ * @author ite102772
+ */
+public class IO {
+    
+    
+    void Load() throws FileNotFoundException{
+        Gson gson = new Gson();
+        JSONArray jsonArray = null;
+        FileReader reader = new FileReader("example.json");
+        
+        SaveLoad load = gson.fromJson(reader, SaveLoad.class);
+        
+        System.out.println("whos turn"+ load.isGameIsWon()+ "\n mister current station: "+ load.getMisterX().getCurrPos());
+    }
+}

@@ -1,0 +1,13 @@
+
+package logic;
+
+import javafx.scene.shape.Circle;
+
+/**
+ *
+ * @author Rezaei
+ */
+public interface GUIConnector {
+    public void circle(double x, double y, int player);
+    
+}

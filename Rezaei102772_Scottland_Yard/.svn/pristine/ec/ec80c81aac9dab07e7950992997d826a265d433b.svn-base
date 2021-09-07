@@ -1,0 +1,158 @@
+
+package logic;
+
+/**
+ * this class is creating the object of identifier with given parameters. identifier can be stored in list of stations. 
+ * 
+ * @author Rezaei
+ */
+public class Station {
+    private int identifier;
+    private Position coordinates;
+//    private int[] taxi;
+//    private int[] bus;
+//    private int[] train;
+//    private int[] boat;
+    
+    private Station[] taxi;
+    private Station[] bus;
+    private Station[] train;
+    private Station[] boat;
+    
+   
+    
+    
+   public Station(int identifier){
+       this.identifier = identifier;
+   }
+    /**
+     * the main constructor to make an identifier, 
+     * @param station
+     * @param coordinates
+     * @param taxi
+     * @param bus
+     * @param train
+     * @param boat 
+     */
+    public Station(int station, Position coordinates, int[] taxi, int[] bus, int[] train, int[] boat) {
+        this.identifier = station;
+        this.coordinates = coordinates;
+//        this.taxi = taxi;
+//        this.bus = bus;
+//        this.train = train;
+//        this.boat = boat;
+    }
+    
+    protected void setCoordinates(Position coordinates){
+        this.coordinates = coordinates;
+    }
+    
+    protected void setTaxiNeighbors(Station[] taxi){
+        this.taxi = taxi;
+    }
+    
+    protected void setBusNeighbors(Station[] bus){
+        this.bus = bus;
+    }
+    protected void setTrainNeighbors(Station[] train){
+        this.train = train;
+    }
+    protected void setBoatNeighbors(Station[] boat){
+        this.boat = boat;
+    }
+    /**
+     * return the x and y coordinates of a identifier
+     * @return array of double, coordinations of stations
+     */
+    protected Position getCoordinates(){
+        return this.coordinates;
+    }
+    /**
+     * this method is returning the identifier number 
+     * @return int identifier number
+     */
+    protected int getIdentifier(){
+        return this.identifier;
+    }
+    /**
+     * this method is returning all the taxi neighbors of a identifier in an array
+     * @return int array of taxi neighbors 
+     */
+    protected Station[] getTaxiNeighbors(){
+        return this.taxi;
+    }
+     /**
+     * this method is returning all the bus neighbors of a identifier in an array
+     * @return int array of bus neighbors 
+     */
+    protected Station[] getBusNeighbors(){
+        return this.bus;
+    }
+     /**
+     * this method is returning all the train neighbors of a identifier in an array
+     * @return int array of train neighbors 
+     */
+    protected Station[] getTrainNeighbors(){
+        return this.train;
+    }
+     /**
+     * this method is returning all the train neighbors of a identifier in an array
+     * @return int array of train neighbors 
+     */
+    protected Station[] getBoatNeighbors(){
+        return this.boat;
+    }
+    protected boolean isNeighbor(int station){
+        boolean neighbor = false;
+
+            if(!neighbor)
+                neighbor = isTaxiNeighbor(station);
+            if(!neighbor)
+                neighbor = isBusNeighbor(station);
+             if(!neighbor)
+                neighbor = isTrainNeighbor(station);
+              if(!neighbor)
+                neighbor = isBoatNeighbor(station);
+            
+        return neighbor;
+    }
+    
+    protected boolean isTaxiNeighbor(int station){
+  
+        for(int i = 0; i < this.getTaxiNeighbors().length; i++){
+            if(this.getTaxiNeighbors()[i].getIdentifier() == station){
+               return true;
+            }
+        }
+        return false;
+    }
+    protected boolean isBusNeighbor(int station){
+  
+        for(int i = 0; i < this.getBusNeighbors().length; i++){
+            if(this.getBusNeighbors()[i].getIdentifier() == station){
+               return true;
+            }
+        }
+        return false;
+    }
+    protected boolean isTrainNeighbor(int station){
+  
+        for(int i = 0; i < this.getTrainNeighbors().length; i++){
+            if(this.getTrainNeighbors()[i].getIdentifier() == station){
+               return true;
+            }
+        }
+        return false;
+    }
+    protected boolean isBoatNeighbor(int station){
+  
+        for(int i = 0; i < this.getBoatNeighbors().length; i++){
+            if(this.getBoatNeighbors()[i].getIdentifier() == station){
+               return true;
+            }
+        }
+        return false;
+    }
+    
+    
+}

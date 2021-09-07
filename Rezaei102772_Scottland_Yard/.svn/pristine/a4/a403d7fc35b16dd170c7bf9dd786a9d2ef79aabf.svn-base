@@ -1,0 +1,57 @@
+
+package rezaei102772_scottland_yard;
+
+import javafx.scene.layout.*;
+import javafx.scene.shape.*;
+import logic.GUIConnector;
+
+/**
+ * javaFXGUI class is being used to update gui of the program. It receives all the necessary elements from 
+ * FXMLDocumentController during initializing and then views will be updated from logic.
+ * @author Rezaei
+ */
+public class javaFXGUI implements GUIConnector{
+    
+    private Pane pnMain;
+    private Circle circle = null;
+    
+    /**
+     * constructor to make javaFXGUI. 
+     * @param pnMain 
+     */
+    public javaFXGUI(Pane pnMain) {
+        this.pnMain = pnMain;
+    }
+    
+    public void drawCircle(double x, double y){
+        
+        //remove the circle from the pane
+        if(circle != null){
+            pnMain.getChildren().remove(circle);
+        }
+        System.out.println("in javafxgui");
+        double xNorm = x * pnMain.getWidth();
+        double yNorm = y * pnMain.getHeight();
+        
+        circle = new Circle();
+        circle.setCenterX(10);
+        circle.setCenterY(10);
+        circle.setRadius(8);
+        circle.setFill(javafx.scene.paint.Color.RED);
+        //bind the center position to the pane on which the circle is displayed 
+        circle.centerXProperty().bind(this.pnMain.widthProperty().multiply(x));
+        circle.centerYProperty().bind(this.pnMain.heightProperty().multiply(y));
+        //remove the previous created circle and display new circle where the mouse 
+        
+       
+        double x1 = circle.centerXProperty().doubleValue();
+        double y1 = circle.centerYProperty().doubleValue();
+        System.out.println(x1 + ", " + y1 + ", \nx and y norms" + xNorm + "," + yNorm+"\n"+this.pnMain.getWidth()+","+ this.pnMain.getHeight());
+        
+        
+        // add the circle to the pane
+        this.pnMain.getChildren().add(circle);
+        
+    }
+    
+}

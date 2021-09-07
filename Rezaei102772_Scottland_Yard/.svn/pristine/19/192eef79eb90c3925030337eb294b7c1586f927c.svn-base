@@ -1,0 +1,77 @@
+
+package logic;
+
+import java.io.FileNotFoundException;
+import java.util.List;
+import org.json.JSONException;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ *
+ * @author Rezaei
+ */
+public class StationsTest {
+    
+    public StationsTest() {
+    }
+
+    @Test
+    public void testListofStations() throws FileNotFoundException, JSONException {
+        
+        JSONParser j = new JSONParser();
+        List<Station> stations;
+        stations = j.jsonParsing();
+        
+        assertEquals(199, stations.size());
+    }
+    @Test
+    public void testConstructor() {
+        
+        
+        Station station = new Station(1, new Position(0.12210915818686401968, 0.04791154791154791232), new int[]{8,9},
+                new int[]{46,58},new int[]{46},new int[]{});
+        
+        assertEquals(1, station.getStation());
+        assertEquals(0.12210915818686401968, station.getCoordinates().getX(), 0.000000000000001);
+        assertEquals(.04791154791154791232, station.getCoordinates().getY(), 0.000000000000001);
+    }
+     @Test
+    public void testTaxiNeghbors(){
+           
+        Station station = new Station(1, new Position(0.12210915818686401968, 0.04791154791154791232), new int[]{8,9},
+                new int[]{46,58},new int[]{46},new int[]{});
+        
+       assertEquals(2, station.getTaxiNeighbors().length);
+       assertEquals(8, station.getTaxiNeighbors()[0]);
+       assertEquals(9, station.getTaxiNeighbors()[1]);
+    }
+     @Test
+    public void testBusNeghbors(){
+           
+        Station station = new Station(1, new Position(0.12210915818686401968, 0.04791154791154791232), new int[]{8,9},
+                new int[]{46,58},new int[]{46},new int[]{});
+        
+       assertEquals(2, station.getBusNeighbors().length);
+       assertEquals(46, station.getBusNeighbors()[0]);
+       assertEquals(58, station.getBusNeighbors()[1]);
+    }
+     @Test
+    public void testTrainNeghbors(){
+           
+        Station station = new Station(1, new Position(0.12210915818686401968, 0.04791154791154791232), new int[]{8,9},
+                new int[]{46,58},new int[]{46},new int[]{});
+        
+       assertEquals(1, station.getTrainNeighbors().length);
+       assertEquals(46, station.getTrainNeighbors()[0]);
+    
+    }
+     @Test
+    public void testBoatNeghbors(){
+           
+        Station station = new Station(1, new Position(0.12210915818686401968, 0.04791154791154791232), new int[]{8,9},
+                new int[]{46,58},new int[]{46},new int[]{});
+        
+       assertEquals(0, station.getBoatNeighbors().length);      
+    }
+}

@@ -1,0 +1,92 @@
+
+package logic;
+
+import com.sun.media.jfxmedia.events.PlayerStateEvent;
+
+/**
+ *
+ * @author ite102772
+ */
+public class Players{
+    
+    
+    private playerType type;
+    private boolean AIControl;
+    private int currentStation;
+    private int taxi;
+    private int bus;
+    private int train;
+    private int boat;
+    
+    /*
+    the array tickets contains number of tickets of each player
+    index 0 is taxi
+    index 1 is bus  
+    index 2 is train 
+    index 3 is boat
+    */
+    private int [] tickets;
+    
+    Players(boolean AIControl, playerType type, int taxi, int bus, int train, int boat){
+        this.AIControl = AIControl;
+        this.type = type;
+//        this.taxi = taxi;
+//        this.bus = bus;
+//        this.train = train;
+//        this.boat = boat;
+        this.tickets = new int[4];
+        this.tickets[0] = taxi;
+        this.tickets[1] = bus;
+        this.tickets[2] = train;
+        this.tickets[3] = boat;
+    }
+    protected boolean isAIControlled(){
+        return AIControl;
+    }
+    public int[] getAllTickets(){
+        return this.tickets;
+    }
+    protected playerType getType(){
+        return type;
+    }
+    protected int getTaxiTickets(){
+        return tickets[0];
+    }
+    protected int getBusTickets(){
+        return tickets[1];
+    }
+    protected int getTrainTickets(){
+        return tickets[2];
+    }
+    protected int getBoatTickets(){
+        return tickets[3];
+    }
+    protected int getCurrentStation(){
+        return currentStation;
+    }
+    protected void setCurrentStation(int currentStation){
+        this.currentStation = currentStation;
+    }
+    protected void increaseTicket(TicketType ticket){
+        if(ticket == TicketType.Taxi){
+           tickets[0]++;
+        }else if(ticket == TicketType.Bus){
+            tickets[1]++;
+        }else if(ticket == TicketType.Underground){
+            tickets[2]++;
+        }else{
+            tickets[3]++;
+        }
+    }
+    protected void decreaseTicket(TicketType ticket){
+        if(ticket == TicketType.Taxi){
+           tickets[0]--;
+        }else if(ticket == TicketType.Bus){
+            tickets[1]--;
+        }else if(ticket == TicketType.Underground){
+            tickets[2]--;
+        }else{
+            tickets[3]--;
+        }
+    }
+}

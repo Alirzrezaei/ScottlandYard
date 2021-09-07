@@ -1,0 +1,11 @@
+
+package logic;
+
+/**
+ *
+ * @author Rezaei
+ */
+public interface GUIConnector {
+    public void drawCircle(double x, double y);
+    
+}

@@ -1,0 +1,384 @@
+package gui;
+
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.stage.Stage;
+import logic.GUIConnector;
+
+/**
+ *
+ * @author Alireza
+ */
+public class FXMLDocumentController implements Initializable {
+
+    private boolean DetectivesAI = false;
+    private boolean MisterXAI = true;
+    private int detectives = 3;
+
+    @FXML
+    private Pane pnMap;
+    @FXML
+    private Pane pnChange;
+
+    private logic.Game game;
+    private GUIConnector gui;
+    @FXML
+    private Label lblTaxi;
+    @FXML
+    private Label lblBus;
+    @FXML
+    private Label lblTrain;
+    @FXML
+    private Label lblBoat;
+    @FXML
+    private Label lblTaxiNum;
+    @FXML
+    private Label lblBusNum;
+    @FXML
+    private Label lblTrainNum;
+    @FXML
+    private Label lblBoatNum;
+    @FXML
+    private Label lblMisterXOne;
+    @FXML
+    private Label lblMisterXTwo;
+    @FXML
+    private Label lblMisterXThree;
+    @FXML
+    private Label lblMisterXFour;
+    @FXML
+    private Label lblMisterXFive;
+    @FXML
+    private Label lblMisterXSix;
+    @FXML
+    private Label lblMisterXSeven;
+    @FXML
+    private Label lblMisterXEight;
+    @FXML
+    private Label lblMisterXNine;
+    @FXML
+    private Label lblMisterXTen;
+    @FXML
+    private Label lblMisterXEleven;
+    @FXML
+    private Label lblMisterXTwelf;
+    @FXML
+    private Label lblMisterXThirteen;
+    @FXML
+    private Label lblMisterXFourteen;
+    @FXML
+    private Label lblMisterXFifteen;
+    @FXML
+    private Label lblMisterXSixteen;
+    @FXML
+    private Label lblMisterXSeventeen;
+    @FXML
+    private Label lblMisterXEighteen;
+    @FXML
+    private Label lblMisterXNinteen;
+    @FXML
+    private Label lblMisterXTwenty;
+    @FXML
+    private Label lblMisterXtwentyone;
+    @FXML
+    private Label lblMisterXTwentyTwo;
+    @FXML
+    private Label lblMisterXTwentythree;
+    @FXML
+    private Label lblMisterXTwentyfour;
+    private ComboBox comboNumDetective;
+    private CheckBox chkBoxMisterX;
+    private CheckBox chkBoxDetectives;
+    private Button btnOK;
+    private Circle circle = null;
+    private Polygon triangle = null;
+    @FXML
+    private MenuItem menuNewGame;
+    @FXML
+    private MenuItem MenuSave;
+    @FXML
+    private MenuItem menuLoad;
+    @FXML
+    private MenuItem howToPlay;
+    @FXML
+    private SplitPane splPnRight;
+    
+    final  SplitPane s = new SplitPane();
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+        setPnMap();
+        setTicketPictures();
+        disableControls();
+        try {
+            playerChooser();
+        } catch (IOException ex) {
+            System.out.println("something happened: " + ex);
+        }
+        
+        
+
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+
+            double diffWidth =  (pnChange.getWidth() - pnChange.getMinWidth());
+            double diffHeight =  (pnChange.getHeight() - pnChange.getMinHeight());
+
+           // pnMap.setPrefSize(pnChange.getMinWidth() + Math.min(diffWidth, diffHeight), pnChange.getMinHeight() + Math.min(diffWidth, diffHeight));
+            
+            pnMap.setPrefWidth(pnMap.getMinWidth() + Math.min(diffWidth, diffHeight));
+            pnMap.setPrefHeight(pnMap.getMinHeight() + Math.min(diffWidth, diffHeight));
+
+        };
+        
+        pnChange.widthProperty().addListener(stageSizeListener);
+        pnChange.heightProperty().addListener(stageSizeListener);
+        
+        
+
+    }
+
+    private void setPnMap() {
+
+        ImageView map = new ImageView();
+        map.setImage(new Image("gui/img/Spielplan.bmp"));
+        pnMap.getChildren().add(map);
+        map.fitWidthProperty().bind(pnMap.widthProperty());
+        map.fitHeightProperty().bind(pnMap.heightProperty());
+    }
+
+    private void setTicketPictures() {
+        ImageView taxi = new ImageView();
+        taxi.setImage(new Image("gui/img/Taxi.bmp"));
+        lblTaxi.setGraphic(taxi);
+        taxi.fitWidthProperty().bind(lblTaxi.widthProperty());
+        taxi.fitHeightProperty().bind(lblTaxi.heightProperty());
+
+        ImageView bus = new ImageView();
+        bus.setImage(new Image("gui/img/Bus.bmp"));
+        lblBus.setGraphic(bus);
+        bus.fitWidthProperty().bind(lblBus.widthProperty());
+        bus.fitHeightProperty().bind(lblBus.heightProperty());
+
+        ImageView underground = new ImageView();
+        underground.setImage(new Image("gui/img/Underground.bmp"));
+        lblTrain.setGraphic(underground);
+        underground.fitWidthProperty().bind(lblTrain.widthProperty());
+        underground.fitHeightProperty().bind(lblTrain.heightProperty());
+
+        ImageView boat = new ImageView();
+        boat.setImage(new Image("gui/img/BlackTicket.bmp"));
+        lblBoat.setGraphic(boat);
+        boat.fitWidthProperty().bind(lblBoat.widthProperty());
+        boat.fitHeightProperty().bind(lblBoat.heightProperty());
+    }
+
+    @FXML
+    private void onClickMenuClose(ActionEvent event) {
+        System.exit(0);
+    }
+
+    @FXML
+    private void onClickMenuAbout(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("about me");
+        alert.setContentText("The Scotland Yard board\n"
+                + "Number of Players: 2-6 Players\n"
+                + "Developed with: Java programming language\n"
+                + "Requirement: JDK 8 or higher\n \n"
+                + "Scotland Yard is a board game in which a team of players, as police, "
+                + "cooperate to track down a player controlling a criminal around a board representing the streets of London, "
+                + "first published in 1983.\n"
+                + "\ndeveloped by Alireza Rezaei");
+        alert.showAndWait();
+    }
+
+    private void playerChooser() throws IOException {
+
+        Label secondLabel = new Label("Detectives");
+
+        ComboBox comboBox = new ComboBox();
+        comboBox.getItems().addAll("3", "4", "5");
+        comboBox.setValue("3");
+
+        CheckBox misterX = new CheckBox("MisterAI");
+        CheckBox detectiveSelection = new CheckBox("DetectivesAI");
+
+        misterX.setSelected(true);
+
+        Button btnOk = new Button("OK");
+
+        StackPane secondaryLayout = new StackPane();
+
+        secondaryLayout.getChildren().addAll(secondLabel, comboBox, misterX, detectiveSelection);
+        secondaryLayout.getChildren().add(btnOk);
+        btnOk.setPrefSize(75, 25);
+        secondLabel.setTranslateX(-65);
+        secondLabel.setTranslateY(-50);
+        comboBox.setTranslateX(30);
+        comboBox.setTranslateY(-50);
+        misterX.setTranslateX(-60);
+        misterX.setTranslateY(0);
+        detectiveSelection.setTranslateX(-50);
+        detectiveSelection.setTranslateY(20);
+        btnOk.setTranslateX(0);
+        btnOk.setTranslateY(50);
+
+        Scene secondScene = new Scene(secondaryLayout, 250, 150);
+
+        // New window (Stage)
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Second Stage");
+        newWindow.setScene(secondScene);
+
+        // Set position of second window, related to primary window.
+        newWindow.setX(500);
+        newWindow.setY(500);
+        newWindow.setAlwaysOnTop(true);
+
+        newWindow.show();
+
+        btnOk.setOnAction((ActionEvent e) -> {
+            if (comboBox.getValue().equals("3")) {
+                detectives = 3;
+            } else if (comboBox.getValue().equals("4")) {
+                detectives = 4;
+            } else if (comboBox.getValue().equals("5")) {
+                detectives = 5;
+            } else {
+                detectives = 3;
+            }
+
+            if (misterX.isSelected()) {
+                this.MisterXAI = true;
+            } else {
+                this.MisterXAI = false;
+            }
+
+            if (detectiveSelection.isSelected()) {
+                this.DetectivesAI = true;          
+            } else {
+                this.DetectivesAI = false;
+            }
+            newWindow.close();
+            for (Node node : splPnRight.lookupAll(".split-pane-divider")) {
+            node.setVisible(false);
+
+        }
+            this.gui = new javaFXGUI(pnMap);
+            this.game = new logic.Game(this.gui, detectives, MisterXAI, DetectivesAI);
+            
+            pnMap.setDisable(false);
+        });
+
+    }
+
+    private void disableControls() {
+        pnMap.setDisable(true);
+    }
+
+    @FXML
+    private void onClickNewGame(ActionEvent event) throws IOException {
+        disableControls();
+        playerChooser();
+    }
+
+    @FXML
+    private void onClickSave(ActionEvent event) {
+        game.save();
+    }
+
+    @FXML
+    private void onClickLoad(ActionEvent event) {
+        game.load();
+    }
+
+    @FXML
+    private void onClickHowtoPlay(ActionEvent event) {
+
+    }
+
+    
+    @FXML
+    private void handleMouseClickPane(javafx.scene.input.MouseEvent event) {
+        //determine relative position of x- and y-coordinates 
+        //(xNorm and yNorm are normalized) 
+
+//        if (circle != null) {
+//            this.pnMap.getChildren().remove(circle);
+//            this.pnMap.getChildren().remove(triangle);
+//        }
+
+//        circle = new Circle();
+//        circle.setCenterX(10);
+//        circle.setCenterY(10);
+//        circle.setRadius(8);
+        double xNorm = event.getX() / this.pnMap.getWidth();
+        double yNorm = event.getY() / this.pnMap.getHeight();
+        //create a circle Circle circle = new Circle(xNorm, yNorm, 3); 
+//        circle.setFill(javafx.scene.paint.Color.RED);
+        //bind the center position to the pane on which the circle is displayed 
+//        circle.centerXProperty().bind(this.pnMap.widthProperty().multiply(xNorm));
+//        circle.centerYProperty().bind(this.pnMap.heightProperty().multiply(yNorm));
+        //remove the previous created circle and display new circle where the mouse 
+        //clicked by adding it to the group 
+        // this.pnMap.getChildren().clear();
+//        double x = circle.centerXProperty().doubleValue();
+//        double y = circle.centerYProperty().doubleValue();
+//        System.out.println(x + ", " + y + ", \nx and y norms" + xNorm + "," + yNorm+"\n"+this.pnMap.getWidth()+","+ this.pnMap.getHeight());
+//        triangle = new Polygon();
+//
+//        triangle.getPoints().addAll(new Double[]{
+//            x, (y + 8.0),
+//            (x + 8.0), (y + 25.0),
+//            (x - 8.0), (y + 25.0)});
+//        triangle.setFill(javafx.scene.paint.Color.PINK);
+       
+//
+////        circle.centerXProperty().bind(this.pnMap.widthProperty().multiply(xNorm));
+////        circle.centerYProperty().bind(this.pnMap.heightProperty().multiply(yNorm));
+//        triangle.translateXProperty().bind(circle.centerXProperty());
+//        triangle.translateYProperty().bind(circle.centerYProperty());
+
+//        this.pnMap.getChildren().add(circle);
+//         this.pnMap.getChildren().add(triangle);
+//        this.pnMap.getChildren().addAll(circle);
+        
+        this.game.getPositions(xNorm, yNorm);
+        
+        
+
+    }
+}

@@ -1,0 +1,30 @@
+/*
+ * An advance programming project to implement Scotland_Yard game board
+ */
+package logic;
+
+/**
+ *
+ * @author Rezaei
+ */
+public class Choose {
+    private TicketType ticket;
+    private int station;
+    private int weight; 
+    
+    Choose(int station, int weight, TicketType ticket){
+        this.ticket = ticket;
+        this.station = station;
+        this.weight = weight;
+    }
+    
+    int getStation(){
+        return station;
+    }
+    TicketType getTicket(){
+        return ticket;
+    }
+    int getWeight(){
+        return weight;
+    }
+}

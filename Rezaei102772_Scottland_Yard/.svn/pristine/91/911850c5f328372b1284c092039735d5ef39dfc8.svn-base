@@ -1,0 +1,312 @@
+package logic;
+
+import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+import org.json.JSONException;
+
+/**
+ *
+ * @author ite102772
+ */
+public class Game {
+
+    private Board board;
+    private JSONParser parser = new JSONParser();
+    private Players[] players;
+    private GUIConnector gui;
+    private int currentIdx = 0;
+    private int avoidedTurn = 1;
+    private int round = 0;
+    private boolean ComboBoxShown = false;
+
+    /**
+     * the main constructor of the game based on parameters received from gui
+     */
+    public Game(GUIConnector gui, int player, boolean misterXAI, boolean detectivesAI) {
+        this.gui = gui;
+        try {
+            // get a list of stations from json parser and pass it to board
+            this.board = new Board(parser.jsonParsing());
+        } catch (FileNotFoundException ex) {
+            System.out.println("it should be implemented by exception class");
+        } catch (JSONException ex) {
+            System.out.println("it should be implemented by exception class");
+        }
+
+        this.players = new Players[player + 1];
+        System.out.print("players: " + players.length);
+        for (int i = 0; i < players.length; i++) {
+            if (i == 0) {
+                this.players[i] = new MisterX(misterXAI, playerType.MisterX, player);
+            } else {
+                this.players[i] = new Detectives(detectivesAI, playerType.Detective);
+            }
+        }
+        setStartingStations();
+        this.gui.updateLblTurn(currentIdx);
+        this.gui.updateLblsTickets(players[currentIdx]);
+    }
+
+    /**
+     * this method is returning array of players
+     *
+     * @return array of players
+     */
+    public Players[] getPlayers() {
+        return this.players;
+    }
+
+    /**
+     * this method is returning number of players.
+     *
+     * @return int number of players
+     */
+    public int getNoOfPlayers() {
+        return players.length;
+    }
+
+    /**
+     * this method set starting points for each player and update the gui to
+     * show them on the board
+     */
+    private void setStartingStations() {
+        int starting[] = new int[]{13, 26, 29, 34, 50, 53, 91, 94, 103, 112, 117, 132, 138, 141, 155, 174, 197, 198};
+        List<Integer> startingList = new LinkedList<>();
+
+        for (int i = 0; i < starting.length; i++) {
+            startingList.add(starting[i]);
+        }
+
+        Random rand = new Random();
+
+        for (int i = 0; i < players.length; i++) {
+            int index = rand.nextInt(startingList.size());
+
+            System.out.println("station for player" + i + " is: " + startingList.get(index));
+            players[i].setCurrentStation(startingList.get(index));
+            this.gui.circle(board.getCoordinates(startingList.get(index))[0], board.getCoordinates(startingList.get(index))[1], i);
+
+            startingList.remove(index);
+        }
+    }
+
+    /**
+     * this method is incrementing the idx of player that next player in the
+     * array can play.
+     */
+    private void nextPlayer() {
+
+        if (ifWon()) {
+            System.out.println("detectives won ");
+            this.gui.endGame(playerType.values()[1]);
+        } else if (round == 22 && currentIdx == players.length - 1) {
+            this.gui.endGame(playerType.values()[0]);
+        } else {
+            currentIdx = (currentIdx + 1) % players.length;
+            if (!canPlay()) {
+                if (avoidedTurn == players.length - 1) {
+                    System.out.println("MisterX won.");
+                    this.gui.endGame(playerType.values()[0]);
+
+                } else {
+                    if (players[currentIdx].getType() != playerType.MisterX) {
+                        avoidedTurn++;
+                    }
+                    nextPlayer();
+                }
+            } else {
+                this.gui.updateLblTurn(currentIdx);
+                this.gui.updateLblsTickets(players[currentIdx]);
+
+                if (players[currentIdx].getType() == playerType.MisterX) {
+                    this.gui.checkBoxBlackTicket(false);
+                } else {
+                    this.gui.checkBoxBlackTicket(true);
+                }
+
+            }
+        }
+    }
+
+    /**
+     * this method is saving the game
+     */
+    public void save() {
+        System.out.println("Save");
+    }
+
+    /**
+     * this method is loading the game.
+     */
+    public void load() {
+        System.out.println("Load");
+    }
+
+    /**
+     * this method is receiving x and y coordinates and finds the correct
+     * station matched on the board. -1 if there is no station is matched with
+     * clicked position.
+     *
+     * @param x
+     * @param y
+     */
+    public void getPositions(double x, double y, boolean blackTicket) {
+        System.out.println(x + ", " + y);
+        int station = board.stationByPoints(x, y);
+    
+        if (station > 0 && !ComboBoxShown) {
+            ComboBoxShown = true;
+            //System.out.println(station + ", current station" + players[currentIdx].getCurrentStation());
+            if (this.board.isNeighbor(players[currentIdx].getCurrentStation(), station)
+                    && ((this.players[currentIdx].getType() == playerType.Detective && !detectiveOccupied(station))
+                    || this.players[currentIdx].getType() == playerType.MisterX)) {
+                //index of list is from 0 to 198 and stations are from 1 to 199
+                System.out.println(this.board.isNeighbor(players[currentIdx].getCurrentStation(), station));
+                double point[] = board.getCoordinates(station);
+                if (moreRoute(station) == 1) {
+
+                    int idx = -1;
+                    boolean[] tickets = ifMoreRoute(station);
+                    //to find which ticket type player should use from current station to clicked station
+                    for (int i = 0; i < tickets.length; i++) {
+                        if (tickets[i]) {
+                            idx = i;
+                        }
+                    }                   
+                    doTurn(x, y, TicketType.values()[idx], station, blackTicket);
+                } else {
+                    gui.showDropDawnList(this, ifMoreRoute(station), x, y, station, blackTicket);
+                   
+                }
+            }
+        }
+    }
+
+    /**
+     * this method is doing the turn of the player
+     *
+     * @param x
+     * @param y
+     * @param ticket
+     * @param station
+     */
+    public void doTurn(double x, double y, TicketType ticket, int station, boolean blackTicket) {
+
+        if (players[currentIdx].getType() == playerType.MisterX && (blackTicket || players[currentIdx].getAllTickets().get(ticket).hashCode() <= 0)) {
+            ticket = TicketType.Boat;
+        }
+
+        if (players[currentIdx].getAllTickets().get(ticket).hashCode() > 0) {
+            double point[] = board.getCoordinates(station);
+            players[currentIdx].decreaseTicket(ticket);
+            this.gui.circle(point[0], point[1], currentIdx);
+            avoidedTurn = 1;
+            if (players[currentIdx].getType() == playerType.MisterX) {
+                this.gui.UsedMisterxTickets(round, ticket);
+                round++;
+            } else {
+                players[0].increaseTicket(ticket);
+            }
+            players[currentIdx].setCurrentStation(station);
+            ComboBoxShown = false;
+            nextPlayer();
+        }
+    }
+
+    /**
+     * this method is checking possible routes from user's current station to
+     * given station. (possible transportation can be used)
+     *
+     * @param station
+     * @return boolean array, true if there is route false if there is no route
+     */
+    private boolean[] ifMoreRoute(int station) {
+
+        boolean[] tickets = new boolean[4];
+
+        tickets[0] = this.board.isTaxiNeighbor(players[currentIdx].getCurrentStation(), station);
+        tickets[1] = this.board.isBusNeighbor(players[currentIdx].getCurrentStation(), station);
+        tickets[2] = this.board.isTrainNeighbor(players[currentIdx].getCurrentStation(), station);
+        tickets[3] = this.board.isBoatNeighbor(players[currentIdx].getCurrentStation(), station);
+
+        return tickets;
+    }
+
+    /**
+     * this method is checking if there is more than one route from user's
+     * current station to given station. (possible transportation can be used)
+     *
+     * @param station
+     * @return int number of possible routes
+     */
+    private int moreRoute(int station) {
+        int routes = 0;
+        boolean[] tickets = ifMoreRoute(station);
+        for (int i = 0; i < tickets.length; i++) {
+            if (tickets[i]) {
+                routes++;
+            }
+        }
+        return routes;
+    }
+
+    /**
+     * this method is checking if the MisterX's current station is equal to one
+     * of the detectives ' current station the detectives won the game
+     *
+     * @return true if MisterX's station is equal to one of the detectives.
+     */
+    private boolean ifWon() {
+        boolean won = false;
+
+        for (int i = 1; i < players.length && !won; i++) {
+            if (players[0].getCurrentStation() == players[i].getCurrentStation()) {
+                won = true;
+            }
+        }
+
+        return won;
+    }
+
+    /**
+     * this method is checking if the current player can play with its remaining
+     * tickets or not
+     *
+     * @return true if player can move
+     */
+    private boolean canPlay() {
+
+        boolean canPlay = false;
+
+        canPlay = canPlay || (board.getTaxiNeighbors(players[currentIdx].getCurrentStation()).length > 0
+                && (players[currentIdx].getTaxiTickets() > 0 || players[currentIdx].getBoatTickets() > 0));
+
+        canPlay = canPlay || (board.getBusNeighbors(players[currentIdx].getCurrentStation()).length > 0
+                && (players[currentIdx].getBusTickets() > 0 || players[currentIdx].getBoatTickets() > 0));
+
+        canPlay = canPlay || (board.getTrainNeighbors(players[currentIdx].getCurrentStation()).length > 0
+                && (players[currentIdx].getTrainTickets() > 0 || players[currentIdx].getBoatTickets() > 0));
+
+        canPlay = canPlay || (board.getBoatNeighbors(players[currentIdx].getCurrentStation()).length > 0 && players[currentIdx].getBoatTickets() > 0);
+
+        return canPlay;
+    }
+
+    public void clear() {
+        gui.clear();
+    }
+
+    private boolean detectiveOccupied(int station) {
+        boolean occupied = false;
+
+        for (int i = 1; i < players.length && !occupied; i++) {
+            if (station == players[i].getCurrentStation()) {
+                occupied = true;
+            }
+        }
+        return occupied;
+    }
+}

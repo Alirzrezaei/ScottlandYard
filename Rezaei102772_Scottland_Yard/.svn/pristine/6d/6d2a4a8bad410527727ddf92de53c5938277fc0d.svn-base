@@ -1,0 +1,18 @@
+
+package logic;
+
+import javafx.scene.shape.Circle;
+
+/**
+ *
+ * @author Rezaei
+ */
+public interface GUIConnector {
+    public void circle(double x, double y, int player);
+    public void updateLblTurn(playerType pl);
+    public void updateLblsTickets(Players player);
+    public void UsedMisterxTickets(int idx, TicketType type);
+    public void showDropDawnList(Game game, boolean[] tickets, double x, double y, int station);
+    public void endGame(playerType type);
+    public void clear();
+}

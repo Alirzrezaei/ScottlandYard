@@ -1,0 +1,139 @@
+
+package logic;
+
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * the Board class receives a list of stations and work on it. It finds out if two stations are neighbors to each other or if a station has
+ * @author Rezaei
+ */
+public class Board {
+    
+    private List<Stations> stations;
+    private TicketType ticketType;
+    Board(List<Stations> stations) {
+        this.stations = stations;
+    }
+    protected List<Stations> getStations(){
+        return stations;
+    }
+    
+    protected void add(Stations station){
+        stations.add(station);
+    }
+    protected int getIdentifier(int idx){
+        return stations.get(idx).getStation();
+    }
+    protected double[] getCoordinates(int idx){
+        //index of list is from 0 to 198 and stations are from 1 to 199
+        return new double[]{getCoordinateX(idx-1), getCoordinateY(idx-1)};
+    }
+    protected double getCoordinateX(int idx){
+        return stations.get(idx).getCoordinates()[0];
+    }
+    protected double getCoordinateY(int idx){
+        return stations.get(idx).getCoordinates()[1];
+    }
+    protected int[] getTaxiNeighbors(int idx){
+        //index of list is from 0 to 198 and stations are from 1 to 199
+        return stations.get(idx-1).getTaxiNeighbors();
+    }
+    protected int[] getBusNeighbors(int idx){
+        //index of list is from 0 to 198 and stations are from 1 to 199
+        return stations.get(idx-1).getBusNeighbors();
+    }
+    protected int[] getTrainNeighbors(int idx){
+        //index of list is from 0 to 198 and stations are from 1 to 199
+        return stations.get(idx-1).getTrainNeighbors();
+    }
+    protected int[] getBoatNeighbors(int idx){
+        //index of list is from 0 to 198 and stations are from 1 to 199
+        return stations.get(idx-1).getBoatNeighbors();
+    }
+    protected TicketType getTicketType(){
+        return this.ticketType;
+    }
+    protected boolean isNeighbor(int current, int idx){
+        boolean isNeighbor = false;
+        
+            isNeighbor = isTaxiNeighbor(current, idx, isNeighbor);
+            isNeighbor = isBusNeighbor(current, idx, isNeighbor);
+            isNeighbor = isTrainNeighbor(current, idx, isNeighbor);
+            isNeighbor = isBoatNeighbor(current, idx, isNeighbor);
+ 
+        return isNeighbor;
+    }
+    protected boolean isTaxiNeighbor(int current, int idx, boolean isNeighbor){
+        
+            for(int i = 0; i < getTaxiNeighbors(current).length && !isNeighbor; i++){
+                if(getTaxiNeighbors(current)[i] == idx){
+                    isNeighbor = true;
+                    ticketType = TicketType.Taxi;
+                }
+            }
+       
+        return isNeighbor;
+    }
+    protected boolean isBusNeighbor(int current, int idx, boolean isNeighbor){
+        
+            for(int i = 0; i < getBusNeighbors(current).length && !isNeighbor; i++){
+                if(getBusNeighbors(current)[i] == idx){
+                    isNeighbor = true;
+                    ticketType = TicketType.Bus;
+                }
+            }
+       
+        return isNeighbor;
+    }
+    protected boolean isTrainNeighbor(int current, int idx, boolean isNeighbor){
+        
+            for(int i = 0; i < getTrainNeighbors(current).length && !isNeighbor; i++){
+                if(getTrainNeighbors(current)[i] == idx){
+                    isNeighbor = true;
+                    ticketType = TicketType.Underground;
+                }
+            }
+       
+        return isNeighbor;
+    }
+    protected boolean isBoatNeighbor(int current, int idx, boolean isNeighbor){
+        
+            for(int i = 0; i < getBoatNeighbors(current).length && !isNeighbor; i++){
+                if(getBoatNeighbors(current)[i] == idx){
+                    isNeighbor = true;
+                    ticketType = TicketType.Boat;
+                }
+            }
+       
+        return isNeighbor;
+    }
+    protected boolean checkCoordinates(double x, double y){
+        return true;
+    }
+    protected int calcPoints(double x, double y){
+        boolean found = false;
+        int station = -1;
+        for(int i = 0; i < stations.size() && !found; i++){
+            double calc = Math.abs(Math.sqrt(Math.pow(x-stations.get(i).getCoordinates()[0], 2) + Math.pow(y - stations.get(i).getCoordinates()[1], 2)));
+            //System.out.println(calc);
+            
+            if(calc < 0.012){
+                System.out.println("calced "+calc+" x "+ x+" y "+ y);
+                found = true; 
+                station = stations.get(i).getStation();
+                
+            }
+        }
+        return station;
+    }
+    
+    protected boolean canPlay(Players player){
+        
+        boolean canPlay = false;
+        
+        canPlay = getTaxiNeighbors(player.getCurrentStation()).length > 0 && player.getTaxiTickets() > 0;
+        
+        return true;
+    }
+}

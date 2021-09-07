@@ -1,0 +1,129 @@
+
+package logic;
+
+import com.sun.media.jfxmedia.events.PlayerStateEvent;
+
+/**
+ *
+ * @author ite102772
+ */
+public class Players{
+    
+    
+    private playerType type;
+    private boolean AIControl;
+    private int currentStation;
+ 
+    /*
+    the array tickets contains number of tickets of each player
+    index 0 is taxi
+    index 1 is bus  
+    index 2 is train 
+    index 3 is boat
+    */
+    private int [] tickets;
+    
+    Players(boolean AIControl, playerType type, int taxi, int bus, int train, int boat){
+        this.AIControl = AIControl;
+        this.type = type;
+        this.tickets = new int[4];
+        this.tickets[0] = taxi;
+        this.tickets[1] = bus;
+        this.tickets[2] = train;
+        this.tickets[3] = boat;
+    }
+    
+    /**
+     * this method is returning if the player is controlled by AI. 
+     * @return boolean
+     */
+    protected boolean isAIControlled(){
+        return AIControl;
+    }
+    /**
+     * this method is returning the array of all tickets. 
+     * @return Array of tickets
+     */
+    public int[] getAllTickets(){
+        return this.tickets;
+    }
+    /**
+     * this method is returning the type of player
+     * @return playerType
+     */
+    protected playerType getType(){
+        return type;
+    }
+    /**
+     * this method is returning the number of taxi tickets
+     * @return integer number of taxi ticket
+     */
+    protected int getTaxiTickets(){
+        return tickets[0];
+    }
+    /**
+     * this method is returning the number of bus tickets
+     * @return integer number of bus ticket
+     */
+    protected int getBusTickets(){
+        return tickets[1];
+    }
+    /**
+     * this method is returning the number of train tickets
+     * @return integer number of train tickets
+     */
+    protected int getTrainTickets(){
+        return tickets[2];
+    }
+    /**
+     * this method is returning the number of boat tickets (black ticket)
+     * @return integer number of boat ticket
+     */
+    protected int getBoatTickets(){
+        return tickets[3];
+    }
+    /**
+     * this method is returning the current station of the player
+     * @return integer current station
+     */
+    protected int getCurrentStation(){
+        return currentStation;
+    }
+    /**
+     * this method is setting the given station as current station of the player.
+     * @param integer currentStation 
+     */
+    protected void setCurrentStation(int currentStation){
+        this.currentStation = currentStation;
+    }
+    /**
+     * this method is receiving a ticket and increase the number of ticket by 1 based on the type.
+     * @param ticket 
+     */
+    protected void increaseTicket(TicketType ticket){
+        if(ticket == TicketType.Taxi){
+           tickets[0]++;
+        }else if(ticket == TicketType.Bus){
+            tickets[1]++;
+        }else if(ticket == TicketType.Underground){
+            tickets[2]++;
+        }else{
+            tickets[3]++;
+        }
+    }
+    /**
+     * this method is receiving a ticket and decrease the number of ticket by 1 based on the type.
+     * @param ticket 
+     */
+    protected void decreaseTicket(TicketType ticket){
+        if(ticket == TicketType.Taxi){
+           tickets[0]--;
+        }else if(ticket == TicketType.Bus){
+            tickets[1]--;
+        }else if(ticket == TicketType.Underground){
+            tickets[2]--;
+        }else{
+            tickets[3]--;
+        }
+    }
+}

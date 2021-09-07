@@ -1,0 +1,142 @@
+
+package logic;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+import static logic.playerType.*;
+
+/**
+ *
+ * @author Rezaei
+ */
+public class PlayersTest {
+    
+
+    @Test
+    public void testConstructorPlayer() {
+        Players[] players = new Players[4]; 
+        
+        for (int i = 0; i < players.length; i++) {
+             if (i == 0) {
+                players[i] = new MisterX(true, playerType.MisterX, players.length-1/*number of detectives*/);
+            } else {
+                players[i] = new Detectives(false, playerType.values()[i]);
+            }    
+        }
+        assertEquals(4, players.length);
+        assertTrue(players[0].isAIControlled());
+        assertFalse(players[1].isAIControlled());
+        assertFalse(players[2].isAIControlled());
+        assertFalse(players[3].isAIControlled());      
+    }
+     @Test
+    public void testConstructorPlayer_playerType() {
+        Players[] players = new Players[6]; 
+        
+        for (int i = 0; i < players.length; i++) {
+             if (i == 0) {
+                players[i] = new MisterX(true, playerType.MisterX, players.length-1/*number of detectives*/);
+            } else {
+                players[i] = new Detectives(false, playerType.values()[i]);
+            }    
+        }
+        assertEquals(6, players.length);
+        
+        assertEquals(MisterX, players[0].getType());
+        assertEquals(BLUE, players[1].getType());
+        assertEquals(YELLOW, players[2].getType());
+        assertEquals(RED, players[3].getType());
+        assertEquals(GREEN, players[4].getType());
+        assertEquals(BLACK, players[5].getType());
+    }
+    @Test
+    public void testConstructorPlayer_MisterXtickets() {
+        Players[] players = new Players[6]; 
+        
+        for (int i = 0; i < players.length; i++) {
+             if (i == 0) {
+                players[i] = new MisterX(true, playerType.MisterX, players.length-1/*number of detectives*/);
+            } else {
+                players[i] = new Detectives(false, playerType.values()[i]);
+            }    
+        }
+        assertEquals(6, players.length);
+        
+        assertEquals(4, players[0].getTaxiTickets());
+        assertEquals(3, players[0].getBusTickets());
+        assertEquals(3, players[0].getTrainTickets());
+        assertEquals(5, players[0].getBoatTickets());   
+    }
+    @Test
+    public void testConstructorPlayer_detectivesTickets() {
+        Players[] players = new Players[6]; 
+        
+        for (int i = 0; i < players.length; i++) {
+             if (i == 0) {
+                players[i] = new MisterX(true, playerType.MisterX, players.length-1/*number of detectives*/);
+            } else {
+                players[i] = new Detectives(false, playerType.values()[i]);
+            }    
+        }
+        assertEquals(6, players.length);
+        
+        assertEquals(10, players[5].getTaxiTickets());
+        assertEquals(8, players[2].getBusTickets());
+        assertEquals(4, players[4].getTrainTickets());
+        assertEquals(0, players[3].getBoatTickets());   
+    }
+    @Test
+    public void testConstructorPlayer_increaseTicketsforMisterX() {
+        Players[] players = new Players[6]; 
+        
+        for (int i = 0; i < players.length; i++) {
+             if (i == 0) {
+                players[i] = new MisterX(true, playerType.MisterX, players.length-1/*number of detectives*/);
+            } else {
+                players[i] = new Detectives(false, playerType.values()[i]);
+            }    
+        }
+        assertEquals(6, players.length);
+        
+        assertEquals(4, players[0].getTaxiTickets());
+        players[0].increaseTicket(TicketType.Taxi);
+        assertEquals(5, players[0].getTaxiTickets());
+        
+        assertEquals(3, players[0].getBusTickets());
+        players[0].increaseTicket(TicketType.Bus);
+        assertEquals(4, players[0].getBusTickets());
+        
+        assertEquals(3, players[0].getTrainTickets());
+        players[0].increaseTicket(TicketType.Underground);
+        assertEquals(4, players[0].getTrainTickets());     
+    }
+   @Test
+    public void testConstructorPlayer_decreaseTicketsforDetectives() {
+        Players[] players = new Players[6]; 
+        
+        for (int i = 0; i < players.length; i++) {
+             if (i == 0) {
+                players[i] = new MisterX(true, playerType.MisterX, players.length-1/*number of detectives*/);
+            } else {
+                players[i] = new Detectives(false, playerType.values()[i]);
+            }    
+        }
+        assertEquals(6, players.length);
+        
+        assertEquals(10, players[5].getTaxiTickets());
+        players[5].decreaseTicket(TicketType.Taxi);
+        assertEquals(9, players[5].getTaxiTickets());
+        
+        assertEquals(8, players[2].getBusTickets());
+        players[2].decreaseTicket(TicketType.Bus);
+        players[2].decreaseTicket(TicketType.Bus);
+        assertEquals(6, players[2].getBusTickets());
+        
+        assertEquals(4, players[4].getTrainTickets());
+        players[4].decreaseTicket(TicketType.Underground);
+        assertEquals(3, players[4].getTrainTickets());
+        
+        assertEquals(0, players[3].getBoatTickets());   
+    }
+}

@@ -1,0 +1,42 @@
+
+package logic;
+
+/**
+ *
+ * @author Rezaei
+ */
+public class Stations {
+    private int station;
+    private double[] coordinates;
+    private int[] taxi;
+    private int[] bus;
+    private int[] train;
+    private int[] boat;
+
+    public Stations(int station, double[] coordinates, int[] taxi, int[] bus, int[] train, int[] boat) {
+        this.station = station;
+        this.coordinates = coordinates;
+        this.taxi = taxi;
+        this.bus = bus;
+        this.train = train;
+        this.boat = boat;
+    }
+    protected double[] getCoordinates(){
+        return this.coordinates;
+    }
+    protected int getStation(){
+        return this.station;
+    }
+    protected int[] getTaxiNeighbors(){
+        return this.taxi;
+    }
+    protected int[] getBusNeighbors(){
+        return this.bus;
+    }
+    protected int[] getTrainNeighbors(){
+        return this.train;
+    }
+    protected int[] getBoatNeighbors(){
+        return this.boat;
+    }
+}
